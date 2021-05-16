@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #local
-    'scraping.apps.ScrapingConfig',
+    'my_apps.apps.MyAppsConfig',
 ]
 
 MIDDLEWARE = [
@@ -121,16 +121,36 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static_cdn'
+STATICFILES_DIRS = [
+    BASE_DIR/'asserts/'
+]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CELERY_BROKER_URL = 'amqp://localhost:5672'
-CELERY_RESULT_BACKEND = 'amqp://localhost:5672'
+#CELERY
+from celery.schedules import crontab   
+
+CELERY_BROKER_URL = 'amqp://@localhost:5672'
+CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+CELERY_BEAT_SCHEDULE = {
+    'read-news-new':{
+        'task': 'read_news',
+        'schedule':crontab(hour=23, day_of_week=6)
+    },
+    'clean_data_base':{
+        'task':'cleanning',
+        'schedule':crontab(hour=23)
+    }
+}
