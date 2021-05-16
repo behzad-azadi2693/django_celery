@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from celery import shared_task
 from .models import News, Movie
 import subprocess
+import os
 
 
 @shared_task(name='read_news')
@@ -60,7 +61,7 @@ def save_function(article_list):
 			break
 	return print('finished') 
 
-import os
+
 @shared_task
 def movie_task(movie_id):
 	movie = Movie.objects.get(id=movie_id)
