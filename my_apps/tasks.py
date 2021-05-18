@@ -65,7 +65,7 @@ def save_function(article_list):
 @shared_task
 def movie_task(movie_id):
 	movie = Movie.objects.get(id=movie_id)
-	name = '/home/joe/Desktop/celery/media/{}_audio.mp3'.format(movie.mv_original.name.split('.')[0],)
+	name = '{}_audio.mp3'.format(movie.mv_original.path.split('.')[0])
 	audio = os.system(f'ffmpeg -i {movie.mv_original.path} -vn {name}')
 	movie.audio  = "movies/"+name.split('/')[-1]
 	movie.save()
