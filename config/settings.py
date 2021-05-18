@@ -137,7 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #CELERY
 from celery.schedules import crontab   
 
-CELERY_BROKER_URL = 'amqp://@localhost:5672'
+CELERY_BROKER_URL = 'amqp://@rabbitmq-container:5672'
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
